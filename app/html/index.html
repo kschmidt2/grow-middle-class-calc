@@ -8,7 +8,7 @@
   <title>Graphic preview</title>
 
   <!--build:css css/styles.min.css-->
-  <link rel="stylesheet" href="css/loan-calculator_styles.css">
+  <link rel="stylesheet" href="css/middle-class-calc_styles.css">
   <!--endbuild-->
 
 </head>
@@ -18,94 +18,93 @@
 
   <div id="calculator">
 
-    <p class="calculator-label">Loan calculator</p>
+    <p class="calculator-label">Are you middle class?</p>
+
+    <div class="intro">There are many ways to define middle class. This calculator features 3 different examples that all use household income. For these calculations, your income is adjusted to a household size of 3, which is the closest whole number to the average U.S. household size (2.5).</div>
 
     <div class="flex-container">
 
       <div class="input-area">
 
         <div class="calc-input money-input wrap">
-          <label for="amount">Loan amount</label>
-          <input type="text" name="amount" v-model="amount" maxlength="10" oninput="this.value=this.value.slice(0,this.maxLength)"></input>
+          <label for="hh_income">Annual pre-tax<br>household income</label>
+          <input type="text" name="hh_income" v-model="hh_income" maxlength="10" oninput="this.value=this.value.slice(0,this.maxLength)"></input>
         </div>
 
-        <div class="wrap">
-          <div class="calc-input">
-            <label for="term">Term</label>
-            <input type="number" name="term" v-model.number="term" maxlength="6"></input>
-          </div>
-      
-          <div class="calc-input-radio">
-            <input type="radio" id="annually" name="frequency" v-model="frequency" value="1"></input>
-            <label for="annually">Years</label>
-      
-            <input type="radio" id="monthly" name="frequency" v-model="frequency" value="12"></input>
-            <label for="monthly">Months</label>
-          </div>
-        </div>
-    
-        <div class="calc-input percent-input ">
-          <label for="interest-rate">Annual interest rate</label>
-          <input type="number" name="interest-rate" v-model.number="interestRate" maxlength="5"></input>
+        <div class="calc-input">
+          <label for="hh_size">Number of people<br>in household</label>
+          <input type="number" name="hh_size" v-model.number="hh_size" maxlength="6"></input>
         </div>
 
-        <button v-on:click="getResults">Calculate</button>
+
+        <div class="calc-input">
+          <label for="metro">Nearest metro area</label>
+          <input type="text" id="metro-dropdown" class="dropdown" list="metro-name" name="metro" v-model="metro" />
+          <datalist id="metro-name">
+            <option v-for="option in options" v-bind:key="option.metro" v-model="metro" >{{ option.metro }}</option>
+          </datalist>
+        </div>
+
+
+
 
       </div>
+
+        <button v-on:click="buttonClick">Calculate</button>
+        <div v-if="errors" class="error-message">Please fill in all fields.</div>
+        
+    </div>
 
         
       <div class="results">
 
-        <table>
-          <tr>
-            <td class="label-text">Monthly payment</td>
-            <td class="value-text">${{monthlyPayment}}</td>
-          </tr>
-          <tr>
-            <td class="label-text">Payoff date</td>
-            <td class="value-text">{{payoffDate}}</td>
-          </tr>
-          <tr>
-            <td class="label-text">Total amount paid</td>
-            <td class="value-text">${{totalPaid}}</td>
-          </tr>
-          <tr>
-            <td class="label-text">Total interest paid</td>
-            <td class="value-text">${{totalInterest}}</td>
-          </tr>
-        </table>
+        <div class="result" v-html="result"></div>
 
-        <div class="chart-header">
-          {{headerString}}
-        </div>
+        <!-- <div class="key">
+          <div class="key-item">
+            <div class="us-square"></div>
+            <span>U.S. middle class</span>
+          </div>   
+          <div class="key-item">
+            <div class="metro-square"></div>
+            <span>{{metro_print}} middle class</span>
+          </div>
+        </div> -->
 
-        <div class="chart-container" id="chart-container-loancalc"></div>
+        <div class="label-text">Pew Research Center</div>
+        <div class="label-explain-text">67% to 200% the national median income</div>
+        <div class="chart-container" id="chart-container-pew"></div>
 
-        <div class="alt-payments">
-          <p>If you increase your monthly payments by 10% to <span class="value-text">${{tenPayment}}</span>, you will save <span class="value-text">${{tenSave}}</span> in interest and pay off your loan by <span class="value-text">{{tenPayoff}}</span>.</p>
-          <p>If you increase your monthly payments by 25% to <span class="value-text">${{twentyfivePayment}}</span>, you will save <span class="value-text">${{twentyfiveSave}}</span> in interest and pay off your loan by <span class="value-text">{{twentyfivePayoff}}</span>.</p>
-        </div>
+        <div class="label-text">Brookings Institution</div>
+        <div class="label-explain-text">20th to 80th percentiles of income</div>
+        <div class="chart-container" id="chart-container-brookings"></div>
+
+        <div class="label-text">Urban Institute</div>
+        <div class="label-explain-text">150% to 500% the federal poverty level</div>
+        <div class="chart-container" id="chart-container-urban"></div>
 
         
       </div>
 
-    </div>
 
     <div class="calc-footer">
+      <div class="chart-source">Sources: Census Bureau Current Population Survey via IPUMS (income data); Federal Register (poverty guidelines); Pew Research Center; Brookings Institution; Urban Institute (middle class definitions)</div>
       <div class="chart-credit">kiersten schmidt/grow</div>
       <img src="https://fm.cnbc.com/applications/cnbc.com/resources/files/2020/01/29/h_logo_white.png" class="grow-logo">
     </div>
    
     
   </div>
+  <!-- <script src="//code.jquery.com/jquery-latest.min.js"></script> -->
+
     
   <script src="https://code.highcharts.com/highcharts.js"></script>
   <!-- <script src="https://code.highcharts.com/modules/data.js"></script> -->
   <!-- <script src="http://code.highcharts.com/modules/exporting.js"></script> -->
-  <!-- <script src="https://code.highcharts.com/highcharts-more.js"></script> -->
+  <script src="https://code.highcharts.com/highcharts-more.js"></script>
   <!--build:js js/main.min.js -->
   <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
-  <script src="js/loan-calculator_main.js"></script>
+  <script src="js/middle-class-calc_main.js"></script>
   <!-- endbuild -->
 </body>
 </html>

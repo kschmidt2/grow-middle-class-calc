@@ -37,7 +37,7 @@
   }
   
   .highcharts-plot-border, .highcharts-plot-background {
-    fill: none;
+    fill: $slate-secondary-2;
   }
   
   .highcharts-label-box {
@@ -92,7 +92,8 @@
   
   .highcharts-grid-line {
     fill: none;
-    stroke: $slate-secondary-3;
+    stroke: white;
+    stroke-width: 1px;
   }
   
   .highcharts-xaxis-grid .highcharts-grid-line {
@@ -204,8 +205,8 @@
   /* Series options */
   /* Default colors */
   .highcharts-color-0 {
-    fill: $green-primary;
-    stroke: $green-primary;
+    fill: $green-secondary-5;
+    stroke: $green-secondary-5;
   }
   
   .highcharts-color-1 {
@@ -470,11 +471,15 @@
   //   fill-opacity: 0.05;
   // }
   
-  // .highcharts-plot-line {
-  //   fill: none;
-  //   stroke: #999999;
-  //   stroke-width: 1px;
-  // }
+  .highcharts-plot-line {
+    fill: none;
+    stroke: $yellow-primary;
+    stroke-width: 5px;
+  }
+
+  .highcharts-purple-plot {
+    stroke: $purple-primary !important;
+  }
   
   /* Highcharts More and modules */
   // .highcharts-boxplot-box {
